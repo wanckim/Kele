@@ -1,9 +1,11 @@
 require 'httparty'
 require 'json'
+require './lib/roadmap.rb'
 
 class Kele
   include HTTParty
   include JSON
+  include Roadmap
 
   base_uri 'https://www.bloc.io/api/v1'
 
@@ -22,10 +24,11 @@ class Kele
     @user_hash = JSON.parse(response.body)
   end
 
-  def get_mentor_availability(id)
-    values = { "id": id }
+  def get_mentor_availability(mentor_id)
+    values = { "id": mentor_id }
 
-    response = self.class.get("/mentors/#{id}/student_availability", body: values, headers: { "authorization" => @auth_token })
+    response = self.class.get("/mentors/#{mentor_id}/student_availability", body: values, headers: { "authorization" => @auth_token })
     @available_time = JSON.parse(response.body)
   end
+
 end
